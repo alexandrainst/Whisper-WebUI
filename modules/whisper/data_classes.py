@@ -175,20 +175,6 @@ class DiarizationParams(BaseParams):
                 label=_("Enable Diarization"),
                 value=defaults.get("is_diarize", cls.__fields__["is_diarize"].default),
             ),
-            gr.Dropdown(
-                label=_("Device"),
-                choices=["cpu", "cuda", "xpu"] if available_devices is None else available_devices,
-                value=defaults.get("device", device),
-            ),
-            gr.Textbox(
-                label=_("HuggingFace Token"),
-                value=defaults.get("hf_token", cls.__fields__["hf_token"].default),
-                info=_("This is only needed the first time you download the model")
-            ),
-            gr.Checkbox(
-                label=_("Offload sub model when finished"),
-                value=defaults.get("enable_offload", cls.__fields__["enable_offload"].default),
-            )
         ]
 
 
@@ -232,11 +218,6 @@ class BGMSeparationParams(BaseParams):
                 choices=["UVR-MDX-NET-Inst_HQ_4",
                          "UVR-MDX-NET-Inst_3"] if available_models is None else available_models,
                 value=defaults.get("uvr_model_size", cls.__fields__["uvr_model_size"].default),
-            ),
-            gr.Dropdown(
-                label=_("Device"),
-                choices=["cpu", "cuda", "xpu"] if available_devices is None else available_devices,
-                value=defaults.get("device", device),
             ),
             gr.Number(
                 label="Segment Size",
@@ -383,10 +364,6 @@ class WhisperParams(BaseParams):
                     choices=available_langs,
                     value=defaults.get("lang", AUTOMATIC_DETECTION),
                 ),
-                gr.Checkbox(
-                    label=_("Translate to English?"),
-                    value=defaults.get("is_translate", cls.__fields__["is_translate"].default),
-                ),
             ]
 
         inputs += [
@@ -405,12 +382,6 @@ class WhisperParams(BaseParams):
                 label="No Speech Threshold",
                 value=defaults.get("no_speech_threshold", cls.__fields__["no_speech_threshold"].default),
                 info="Threshold for detecting silence"
-            ),
-            gr.Dropdown(
-                label="Compute Type",
-                choices=["float16", "int8", "int16"] if available_compute_types is None else available_compute_types,
-                value=defaults.get("compute_type", compute_type),
-                info="Computation type for transcription"
             ),
             gr.Number(
                 label="Best Of",
