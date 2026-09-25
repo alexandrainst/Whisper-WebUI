@@ -53,7 +53,7 @@ class App:
         whisper_params = self.default_params["whisper"]
         vad_params = self.default_params["vad"]
         diarization_params = self.default_params["diarization"]
-        diarization_params["hf_token"] = os.getenv("HF_TOKEN")
+        diarization_params["hf_token"] = os.getenv("HF_TOKEN", "")
         uvr_params = self.default_params["bgm_separation"]
 
         with gr.Row():
@@ -110,7 +110,7 @@ class App:
                             label=_("Language"), interactive=True,
                             visible=True,  # Set it by development purpose.
                             )
-            with Translate(I18N_YAML_PATH):  # Add `lang = lang` here to test dynamic change of the languages.
+            with Translate(self.i18n):  # Add `lang = lang` here to test dynamic change of the languages.
                 with gr.Row():
                     with gr.Column():
                         gr.Markdown(MARKDOWN, elem_id="md_project")
@@ -184,7 +184,7 @@ class App:
                     with gr.TabItem(_("Mic")):  # tab3
                         with gr.Row():
                             mic_input = gr.Microphone(label=_("Record with Mic"), type="filepath", interactive=True,
-                                                      show_download_button=True)
+                                                      buttons=["download"])
 
                         pipeline_params, dd_file_format, cb_timestamp = self.create_pipeline_inputs()
 
